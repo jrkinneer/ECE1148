@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        
+        int total_profit = 0;
+        int buy = 0; //index of price we buy
+        int sell = 0; //index of price we sell at
+        int buy_price = 0;
+        int sell_price = 0;
+
+        int size = prices.size();
+
+        while (buy < size && sell < size){
+
+            //increment buy index until we hit the next to last index or
+            //until the next index is gonna be larger than our current buy index (local valley)
+            while (buy < size - 1 && prices[buy + 1] < prices[buy]){
+                buy++;
+            }
+            buy_price = prices[buy];
+            sell_price = buy_price;
+            sell = buy; //set sell index to current buy index
+
+            //increment sell index until we hit next to last day or 
+            //when the next days prices is smaller (local peak)
+            while (sell < size - 1 && prices[sell + 1] > prices[sell]){
+                sell++;
+            }
+            sell_price = prices[sell];
+
+            total_profit += sell_price - buy_price;
+
+            buy = sell + 1; //increment buy index to the next day
+        }
+
+        return total_profit;
+    }
+};
